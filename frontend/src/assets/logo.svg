@@ -1,0 +1,23 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b2540;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a4d7a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Main circle background -->
+  <circle cx="24" cy="24" r="22" fill="url(#logoGradient)" />
+  
+  <!-- Wallet/ledger shape -->
+  <g transform="translate(12, 12)">
+    <!-- Main wallet body -->
+    <rect x="2" y="4" width="20" height="16" rx="2" fill="white" opacity="0.95"/>
+    <!-- Accent fold -->
+    <path d="M 2 8 L 22 8" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.3"/>
+    <!-- Money symbol inside -->
+    <g transform="translate(8, 10)">
+      <circle cx="4" cy="2" r="3" fill="url(#logoGradient)"/>
+      <path d="M 4 0 L 4 4" stroke="url(#logoGradient)" stroke-width="1.2"/>
+    </g>
+  </g>
+</svg>

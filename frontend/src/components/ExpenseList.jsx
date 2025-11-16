@@ -42,17 +42,22 @@ export default function ExpenseList({ expenses, refresh }) {
               const title = `${(category && category.trim()) || "Uncategorized"} - ₹${amount}`;
 
               return (
-                <li key={id} className="flex justify-between items-center bg-linear-to-r from-gray-50 to-gray-100 border-l-4 border-[#0b2540] p-4 rounded-lg hover:shadow-md transition-shadow">
+                <li
+                  key={id}
+                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-linear-to-r from-gray-50 to-gray-100 border-l-4 border-[#0b2540] p-4 rounded-lg transition-shadow"
+                >
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-800 text-base">{title}</p>
-                    <p className="text-sm text-gray-500 mt-1">{date && <span>{new Date(dateRaw).toLocaleDateString()}</span>}</p>
+                    <p className="font-medium text-slate-800 text-base">{title}</p>
+                    <p className="text-sm text-slate-500 mt-1">{date && <span>{new Date(dateRaw).toLocaleDateString()}</span>}</p>
                   </div>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="ml-4 px-4 py-2 bg-red-50 text-red-600 font-medium rounded-lg hover:bg-red-100 hover:text-red-700 transition-all shadow-sm hover:shadow-md"
-                  >
-                    Remove
-                  </button>
+                  <div className="flex items-center gap-3 mt-3 sm:mt-0">
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="px-3 py-1.5 border border-red-100 text-red-600 font-medium rounded-md hover:bg-red-50 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </li>
               );
             })}
