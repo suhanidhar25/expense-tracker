@@ -1,7 +1,7 @@
 import React from "react";
 import { deleteExpense } from "../api";
 
-export default function ExpenseList({ expenses, refresh }) {
+export default function ExpenseList({ expenses, refresh, onEdit }) {
   async function handleDelete(id) {
     const confirmDelete = confirm("Are you sure you want to delete this expense?");
     if (!confirmDelete) return;
@@ -15,7 +15,6 @@ export default function ExpenseList({ expenses, refresh }) {
     }
   }
 
-  // Make sure we always work with an array
   const list = Array.isArray(expenses) ? expenses : [];
 
   return (
@@ -23,37 +22,67 @@ export default function ExpenseList({ expenses, refresh }) {
       {list.length === 0 ? (
         <div className="text-center py-16">
           <div className="text-6xl mb-4">📋</div>
-          <p className="text-gray-500 text-lg font-light">No expenses recorded yet</p>
-          <p className="text-gray-400 text-sm mt-2">Start by adding your first expense above</p>
+          <p className="text-gray-500 text-lg font-light">
+            No expenses recorded yet
+          </p>
+          <p className="text-gray-400 text-sm mt-2">
+            Start by adding your first expense above
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="text-sm text-gray-600 font-medium px-2 mb-4">Total: <span className="text-[#0b2540] font-bold">₹{list.reduce((sum, e) => sum + (Number(e.amount) || 0), 0).toLocaleString()}</span></div>
+          {/* Total */}
+          <div className="text-sm text-gray-600 font-medium px-2 mb-4">
+            Total:{" "}
+            <span className="text-[#0b2540] font-bold">
+              ₹
+              {list
+                .reduce((sum, e) => sum + (Number(e.amount) || 0), 0)
+                .toLocaleString()}
+            </span>
+          </div>
+
           <ul className="space-y-3">
             {list.map((exp) => {
-              // Defensive id resolution for various backend shapes
-              const id = exp.expenseId || exp.id || exp.expense_id || (exp.pk && exp.pk.S) || String(exp._id || "");
-              const category = (exp.category || exp.type || "").toString();
-              const amount = exp.amount ?? exp.AMOUNT ?? exp.value ?? "-";
-              const dateRaw = exp.date || exp.createdAt || exp.timestamp || exp.created_at;
-              const date = dateRaw ? new Date(dateRaw).toLocaleString() : "";
+              const id =
+                exp.expenseId ||
+                exp.id ||
+                exp.expense_id ||
+                (exp.pk && exp.pk.S) ||
+                String(exp._id || "");
 
-              // Title has been removed from the UI per request. Show Category - ₹amount as primary
-              const title = `${(category && category.trim()) || "Uncategorized"} - ₹${amount}`;
+              const category = (exp.category || "").toString();
+              const amount = exp.amount ?? "-";
+              const dateRaw = exp.date;
+              const date = dateRaw ? new Date(dateRaw).toLocaleDateString() : "";
+
+              const title = `${category || "Uncategorized"} - ₹${amount}`;
 
               return (
                 <li
                   key={id}
-                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-linear-to-r from-gray-50 to-gray-100 border-l-4 border-[#0b2540] p-4 rounded-lg transition-shadow"
+                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition-all"
                 >
+                  {/* Left */}
                   <div className="flex-1">
                     <p className="font-medium text-slate-800 text-base">{title}</p>
-                    <p className="text-sm text-slate-500 mt-1">{date && <span>{new Date(dateRaw).toLocaleDateString()}</span>}</p>
+                    <p className="text-sm text-slate-500 mt-1">{date}</p>
                   </div>
+
+                  {/* Buttons */}
                   <div className="flex items-center gap-3 mt-3 sm:mt-0">
+                    {/* EDIT BUTTON */}
+                    <button
+                      onClick={() => onEdit(exp)}
+                      className="px-3 py-1.5 border border-blue-200 text-blue-600 font-medium rounded-md hover:bg-blue-50 transition-colors"
+                    >
+                      Edit
+                    </button>
+
+                    {/* DELETE BUTTON */}
                     <button
                       onClick={() => handleDelete(id)}
-                      className="px-3 py-1.5 border border-red-100 text-red-600 font-medium rounded-md hover:bg-red-50 transition-colors"
+                      className="px-3 py-1.5 border border-red-200 text-red-600 font-medium rounded-md hover:bg-red-50 transition-colors"
                     >
                       Remove
                     </button>
